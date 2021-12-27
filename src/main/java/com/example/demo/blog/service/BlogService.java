@@ -17,32 +17,38 @@ public class BlogService {
 	public Blog saveBlog(Blog blog) {
 		return repo.save(blog);
 	}
+	
+	public List<Blog> saveBlogs(List<Blog> blog) {
+		return repo.saveAll(blog);
+	}
 
 	public List<Blog> getBlogs() {
 		return repo.findAll();
 	}
  
-	public Blog getBlogById(int id) {
+	public Blog getBlogById(Integer id) {
 		return repo.findById(id).orElse(null);
 	}
 	
 	public Blog getBlogByTitle(String title) {
-		return repo.findByTitle(title);
+		return repo.findByBlogTitle(title);
+	}
+	
+	public List<Blog> getBlogByAuthor(String author) {
+		return repo.findByBlogAuthor(author);
 	}
 
-	public String deleteBlogById(int id) {
+	public String deleteBlogById(Integer id) {
 
-		@SuppressWarnings("deprecation")
-		Blog b=repo.getOne(id);
-		repo.delete(b);
+		repo.deleteById(id);
 		return "the blog"+id + "has been deleted!";
 	}
 	
 	public Blog updateBlog(Blog blog) {
 		Blog existingBlog= repo.findById(blog.getBlogId()).orElse(null);
-		existingBlog.getBlogTitle(blog.setBlogTitle());
-		existingBlog.getBlogDescription(blog.setBlogDescription());
-		existingBlog.getBlogAuthor(blog.setBlogAuthor());
+		existingBlog.setBlogTitle(blog.getBlogTitle());
+		existingBlog.setBlogDescription(blog.getBlogDescription());
+		existingBlog.setBlogAuthor(blog.getBlogAuthor());
 		return repo.save(existingBlog);
 	}
 }
